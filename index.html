@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MH Construction - AI-Powered Project Management Dashboard</title>
+    <!-- Google Fonts for improved typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+    <!-- Font Awesome (latest) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <h1>MH Construction</h1>
+                <p>AI-Powered Project Management Dashboard</p>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-outline" onclick="syncData( )">
+                    <i class="fas fa-sync"></i> Sync Data
+                </button>
+                <button class="btn btn-outline" onclick="exportData()">
+                    <i class="fas fa-download"></i> Export
+                </button>
+                <div class="ai-status">
+                    <i class="fas fa-robot"></i>
+                    <span>Manus AI Ready</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Overview Cards -->
+        <section class="overview-cards">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Total Submittals</h3>
+                    <i class="fas fa-file-text"></i>
+                </div>
+                <div class="card-content">
+                    <div class="card-number" id="total-submittals">0</div>
+                    <div class="card-subtitle" id="approved-submittals">0 approved</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Open RFIs</h3>
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <div class="card-content">
+                    <div class="card-number" id="open-rfis">0</div>
+                    <div class="card-subtitle" id="urgent-rfis">0 urgent</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>AI Analyses</h3>
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="card-content">
+                    <div class="card-number" id="ai-analyses">0</div>
+                    <div class="card-subtitle" id="pending-analyses">0 pending</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Issues Found</h3>
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="card-content">
+                    <div class="card-number" id="issues-found">0</div>
+                    <div class="card-subtitle">By Manus AI</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabs -->
+        <section class="tabs-container">
+            <div class="tabs">
+                <button class="tab-button active" onclick="showTab('submittals', event)">Submittals</button>
+                <button class="tab-button" onclick="showTab('rfis', event)">RFIs</button>
+                <button class="tab-button" onclick="showTab('ai-analysis', event)">AI Document Analysis</button>
+                <button class="tab-button" onclick="showTab('integration', event)">System Integration</button>
+            </div>
+
+            <!-- Submittals Tab -->
+            <div id="submittals" class="tab-content active">
+                <div class="tab-header">
+                    <h2>Submittal Tracking</h2>
+                    <div class="tab-actions">
+                        <button class="btn btn-outline">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                        <button class="btn btn-primary" onclick="showNewSubmittalForm()">
+                            <i class="fas fa-plus"></i> New Submittal
+                        </button>
+                    </div>
+                </div>
+                <div id="submittals-list" class="content-list">
+                    <div class="empty-state">
+                        <i class="fas fa-file-text"></i>
+                        <h3>No submittals yet</h3>
+                        <p>Click "New Submittal" to add your first submittal for tracking</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RFIs Tab -->
+            <div id="rfis" class="tab-content">
+                <div class="tab-header">
+                    <h2>RFI Management</h2>
+                    <div class="tab-actions">
+                        <button class="btn btn-primary" onclick="showNewRFIForm()">
+                            <i class="fas fa-plus"></i> New RFI
+                        </button>
+                    </div>
+                </div>
+                <div id="rfis-list" class="content-list">
+                    <div class="empty-state">
+                        <i class="fas fa-question-circle"></i>
+                        <h3>No RFIs yet</h3>
+                        <p>Click "New RFI" to create your first Request for Information</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Document Analysis Tab -->
+            <div id="ai-analysis" class="tab-content">
+                <div class="tab-header">
+                    <h2>AI Document Analysis</h2>
+                    <div class="ai-badge">
+                        <i class="fas fa-robot"></i>
+                        <span>Powered by Manus AI</span>
+                    </div>
+                </div>
+                
+                <!-- Upload Section -->
+                <div class="upload-section">
+                    <h3>Upload Documents for AI Analysis</h3>
+                    <p>Upload drawings, specifications, or submittals for automated analysis by Manus AI</p>
+                    <div class="upload-area" onclick="document.getElementById('file-input').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Click to upload or drag and drop files here</p>
+                        <small>Supported formats: PDF, DWG, DOC, DOCX, Images</small>
+                    </div>
+                    <input type="file" id="file-input" accept=".pdf,.dwg,.doc,.docx,.jpg,.jpeg,.png" multiple style="display: none;" onchange="handleFileUpload(event)">
+                </div>
+
+                <!-- Analysis Queue -->
+                <div id="analysis-queue" class="analysis-section" style="display: none;">
+                    <h3>Analysis Queue</h3>
+                    <div id="queue-list" class="queue-list"></div>
+                </div>
+
+                <!-- Document Analysis Results -->
+                <div id="analysis-results" class="content-list">
+                    <div class="empty-state">
+                        <i class="fas fa-brain"></i>
+                        <h3>Ready for AI Analysis</h3>
+                        <p>Upload documents above to begin AI-powered analysis for discrepancies and issues</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Integration Tab -->
+            <div id="integration" class="tab-content">
+                <div class="tab-header">
+                    <h2>System Integration Status</h2>
+                </div>
+                <div class="integration-grid">
+                    <div class="integration-card">
+                        <div class="integration-header">
+                            <i class="fas fa-check-circle status-connected"></i>
+                            <h3>Manus AI Integration</h3>
+                        </div>
+                        <p>AI document analysis engine connected and ready</p>
+                        <div class="integration-details">
+                            <div class="detail-row">
+                                <span>Status:</span>
+                                <span>Active</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Documents Analyzed:</span>
+                                <span id="total-analyzed">0</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Issues Detected:</span>
+                                <span id="total-issues">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="integration-card">
+                        <div class="integration-header">
+                            <i class="fas fa-clock status-pending"></i>
+                            <h3>Procore Integration</h3>
+                        </div>
+                        <p>Ready for connection to Procore API</p>
+                        <div class="integration-details">
+                            <div class="detail-row">
+                                <span>Status:</span>
+                                <span>Ready to Connect</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>API Key:</span>
+                                <span>Not Configured</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Projects:</span>
+                                <span>0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="integration-card">
+                        <div class="integration-header">
+                            <i class="fas fa-clock status-pending"></i>
+                            <h3>Sage 100 Integration</h3>
+                        </div>
+                        <p>Ready for connection to Sage 100</p>
+                        <div class="integration-details">
+                            <div class="detail-row">
+                                <span>Status:</span>
+                                <span>Ready to Connect</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Database:</span>
+                                <span>Not Connected</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Financial Data:</span>
+                                <span>Pending</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="integration-card">
+                        <div class="integration-header">
+                            <i class="fas fa-check-circle status-connected"></i>
+                            <h3>Document Storage</h3>
+                        </div>
+                        <p>Local document management active</p>
+                        <div class="integration-details">
+                            <div class="detail-row">
+                                <span>Storage:</span>
+                                <span>Browser Local Storage</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Documents:</span>
+                                <span id="stored-docs">0</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Capacity:</span>
+                                <span>Available</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- AI Analysis Modal -->
+    <div id="ai-analysis-modal" class="modal">
+        <div class="modal-content ai-modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-robot"></i> Send to Manus AI for Analysis</h3>
+                <span class="close" onclick="closeModal('ai-analysis-modal')">&times;</span>
+            </div>
+            <div class="ai-instructions">
+                <h4>How to get AI analysis:</h4>
+                <ol>
+                    <li><strong>Copy the text below</strong> and send it to Manus AI in a new message</li>
+                    <li><strong>Attach your document</strong> to the same message</li>
+                    <li><strong>Wait for analysis results</strong> from Manus AI</li>
+                    <li><strong>Return here</strong> and click "Add AI Results" to input the findings</li>
+                </ol>
+            </div>
+            <div class="ai-request-text">
+                <label>Copy this text and send to Manus AI:</label>
+                <textarea id="ai-request-content" readonly rows="8"></textarea>
+                <button class="btn btn-outline" onclick="copyToClipboard('ai-request-content')">
+                    <i class="fas fa-copy"></i> Copy Text
+                </button>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeModal('ai-analysis-modal')">Cancel</button>
+                <button class="btn btn-primary" onclick="markAsPendingAnalysis()">
+                    <i class="fas fa-paper-plane"></i> Sent to AI
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Results Input Modal -->
+    <div id="ai-results-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-brain"></i> Add AI Analysis Results</h3>
+                <span class="close" onclick="closeModal('ai-results-modal')">&times;</span>
+            </div>
+            <form id="ai-results-form" onsubmit="addAIResults(event)">
+                <div class="form-group">
+                    <label for="ai-confidence">Confidence Level (%):</label>
+                    <input type="number" id="ai-confidence" min="0" max="100" value="95" required>
+                </div>
+                <div class="form-group">
+                    <label for="ai-summary">Analysis Summary:</label>
+                    <textarea id="ai-summary" rows="3" placeholder="Brief summary of AI findings..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Issues Found:</label>
+                    <div id="issues-container">
+                        <div class="issue-input">
+                            <select class="issue-type" required>
+                                <option value="">Select Issue Type</option>
+                                <option value="Dimensional Discrepancy">Dimensional Discrepancy</option>
+                                <option value="Material Specification">Material Specification</option>
+                                <option value="Connection Detail">Connection Detail</option>
+                                <option value="Code Compliance">Code Compliance</option>
+                                <option value="Drawing Conflict">Drawing Conflict</option>
+                                <option value="Specification Conflict">Specification Conflict</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <select class="issue-severity" required>
+                                <option value="">Severity</option>
+                                <option value="Critical">Critical</option>
+                                <option value="High">High</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Low">Low</option>
+                            </select>
+                            <input type="text" class="issue-location" placeholder="Location (e.g., Grid A-3, Level 2)" required>
+                            <textarea class="issue-description" placeholder="Detailed description of the issue..." required></textarea>
+                            <button type="button" class="btn btn-outline btn-small" onclick="removeIssue(this)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline" onclick="addIssueInput()">
+                        <i class="fas fa-plus"></i> Add Another Issue
+                    </button>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('ai-results-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save AI Results
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Standard Modals (Submittal and RFI) -->
+    <div id="submittal-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>New Submittal</h3>
+                <span class="close" onclick="closeModal('submittal-modal')">&times;</span>
+            </div>
+            <form id="submittal-form" onsubmit="addSubmittal(event)">
+                <div class="form-group">
+                    <label for="submittal-description">Description:</label>
+                    <input type="text" id="submittal-description" required>
+                </div>
+                <div class="form-group">
+                    <label for="submittal-trade">Trade:</label>
+                    <select id="submittal-trade" required>
+                        <option value="">Select Trade</option>
+                        <option value="Concrete">Concrete</option>
+                        <option value="Steel">Steel</option>
+                        <option value="Electrical">Electrical</option>
+                        <option value="HVAC">HVAC</option>
+                        <option value="Plumbing">Plumbing</option>
+                        <option value="Roofing">Roofing</option>
+                        <option value="Flooring">Flooring</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="submittal-subcontractor">Subcontractor:</label>
+                    <input type="text" id="submittal-subcontractor" required>
+                </div>
+                <div class="form-group">
+                    <label for="submittal-priority">Priority:</label>
+                    <select id="submittal-priority" required>
+                        <option value="Critical">Critical</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="submittal-date">Required Date:</label>
+                    <input type="date" id="submittal-date" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('submittal-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Submittal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="rfi-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>New RFI</h3>
+                <span class="close" onclick="closeModal('rfi-modal')">&times;</span>
+            </div>
+            <form id="rfi-form" onsubmit="addRFI(event)">
+                <div class="form-group">
+                    <label for="rfi-description">Question/Description:</label>
+                    <textarea id="rfi-description" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="rfi-trade">Trade:</label>
+                    <select id="rfi-trade" required>
+                        <option value="">Select Trade</option>
+                        <option value="Concrete">Concrete</option>
+                        <option value="Steel">Steel</option>
+                        <option value="Electrical">Electrical</option>
+                        <option value="HVAC">HVAC</option>
+                        <option value="Plumbing">Plumbing</option>
+                        <option value="Roofing">Roofing</option>
+                        <option value="Flooring">Flooring</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="rfi-priority">Priority:</label>
+                    <select id="rfi-priority" required>
+                        <option value="Critical">Critical</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="rfi-response-date">Response Required:</label>
+                    <input type="date" id="rfi-response-date" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('rfi-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create RFI</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
