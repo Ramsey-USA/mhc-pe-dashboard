@@ -1,0 +1,20 @@
+document.addEventListener('DOMContentLoaded', function() {
+    initializeDashboard();
+    const fileInput = document.getElementById('file-input');
+    if (fileInput) {
+        fileInput.addEventListener('change', handleFileUpload);
+    }
+});
+
+function handleFileUpload(event) {
+    if (!event || !event.target || !event.target.files) {
+        showNotification('File upload failed: No files detected.', 'error');
+        return;
+    }
+    const files = event.target.files;
+    if (!files.length) {
+        showNotification('No files selected.', 'warning');
+        return;
+    }
+    // ...rest of your logic...
+}

@@ -151,23 +151,17 @@
                         <p>Click to upload or drag and drop files here</p>
                         <small>Supported formats: PDF, DWG, DOC, DOCX, Images</small>
                     </div>
-                    <input type="file" id="file-input" accept=".pdf,.dwg,.doc,.docx,.jpg,.jpeg,.png" multiple style="display: none;" onchange="handleFileUpload(event)">
+                    <input type="file" id="file-input" accept=".pdf,.dwg,.doc,.docx,.jpg,.jpeg,.png" multiple style="display: none;">
                 </div>
 
                 <!-- Analysis Queue -->
-                <div id="analysis-queue" class="analysis-section" style="display: none;">
-                    <h3>Analysis Queue</h3>
-                    <div id="queue-list" class="queue-list"></div>
+                <div id="analysis-queue" style="display:none;">
+                    <h3>Pending Analysis</h3>
+                    <div id="queue-list"></div>
                 </div>
 
-                <!-- Document Analysis Results -->
-                <div id="analysis-results" class="content-list">
-                    <div class="empty-state">
-                        <i class="fas fa-brain"></i>
-                        <h3>Ready for AI Analysis</h3>
-                        <p>Upload documents above to begin AI-powered analysis for discrepancies and issues</p>
-                    </div>
-                </div>
+                <!-- AI analysis results -->
+                <div id="analysis-results"></div>
             </div>
 
             <!-- System Integration Tab -->
