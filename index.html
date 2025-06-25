@@ -13,7 +13,7 @@
         <div class="header-content">
             <div class="header-left">
                 <h1><i class="fas fa-hard-hat"></i> MH Construction</h1>
-                <p>AI-Powered Quality Control Dashboard</p>
+                <p>Project Engineer Dashboard</p>
             </div>
             <div class="header-right">
                 <div class="project-selector">
@@ -57,7 +57,7 @@
     <!-- Main Content -->
     <main id="main-content" class="main-content" style="display: none;">
         <!-- Overview Cards -->
-        <section class="overview-cards">
+        <section class="cards-carousel overview-cards">
             <div class="card quality-card">
                 <div class="card-header">
                     <h3>Project Quality Score</h3>
@@ -123,6 +123,25 @@
         <!-- Project Info -->
         <div class="project-info" id="project-info">
             <span class="project-name">No Project Selected</span>
+        </div>
+
+        <!-- Compact Module Button Bar -->
+        <div class="module-buttons">
+            <button class="module-btn active" onclick="showModule('project-overview', this)">
+                <i class="fas fa-tachometer-alt"></i>
+            </button>
+            <button class="module-btn" onclick="showModule('master-documents', this)">
+                <i class="fas fa-folder-open"></i>
+            </button>
+            <button class="module-btn" onclick="showModule('quality-control', this)">
+                <i class="fas fa-search"></i>
+            </button>
+            <button class="module-btn" onclick="showModule('rfi-management', this)">
+                <i class="fas fa-clipboard-question"></i>
+            </button>
+            <button class="module-btn" onclick="showModule('analytics', this)">
+                <i class="fas fa-chart-line"></i>
+            </button>
         </div>
 
         <!-- Tabs Container -->
@@ -414,8 +433,15 @@
                     <textarea id="project-description" rows="3"></textarea>
                 </div>
                 <div class="form-actions">
-                    <button type="button" class="btn btn-outline" onclick="closeModal('new-project-modal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create Project</button>
+                    <!-- Cancel/Close buttons -->
+                    <button type="button" class="btn btn-outline" onclick="closeModal('new-project-modal')">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+
+                    <!-- Submit/Create/Save buttons -->
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Create Project
+                    </button>
                 </div>
             </form>
         </div>
@@ -549,12 +575,14 @@
                                     <input type="checkbox" class="create-rfi-checkbox">
                                     <span>Create RFI for this issue</span>
                                 </label>
+                                <!-- Remove Issue -->
                                 <button type="button" class="btn btn-danger btn-small" onclick="removeQualityIssue(this)">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
+                    <!-- Add Another Issue -->
                     <button type="button" class="btn btn-outline btn-small" onclick="addQualityIssueInput()">
                         <i class="fas fa-plus"></i> Add Another Issue
                     </button>

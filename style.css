@@ -79,7 +79,7 @@ p, label, span, select, input, textarea, button {
 
 /* Header */
 .header {
-    background: linear-gradient(90deg, var(--blue) 60%, var(--blue-light) 100%);
+    background: linear-gradient(90deg, var(--blue) 0%, var(--green-light) 100%);
     color: var(--white);
     padding: 1.5rem 0 1.2rem 0;
     box-shadow: 0 2px 16px rgba(30,92,151,0.10);
@@ -234,44 +234,46 @@ p, label, span, select, input, textarea, button {
     margin-right: 0.5em;
 }
 
-.btn-primary {
+.btn-primary, button.btn-primary {
     background: linear-gradient(90deg, var(--blue) 60%, var(--green) 100%);
     color: var(--white);
-    border: none;
 }
-
-.btn-primary:hover, .btn-primary:focus {
+.btn-primary:hover, button.btn-primary:hover,
+.btn-primary:focus, button.btn-primary:focus {
     background: linear-gradient(90deg, var(--blue-light) 60%, var(--green-light) 100%);
     color: var(--white);
     box-shadow: 0 6px 18px rgba(30,92,151,0.18);
     transform: translateY(-2px) scale(1.03);
 }
 
-.btn-outline {
+/* Outline button style */
+.btn-outline, button.btn-outline {
     background: transparent;
     color: var(--blue);
     border: 2px solid var(--blue);
 }
-
-.btn-outline:hover, .btn-outline:focus {
+.btn-outline:hover, button.btn-outline:hover,
+.btn-outline:focus, button.btn-outline:focus {
     background: var(--blue);
     color: var(--white);
     box-shadow: 0 6px 18px rgba(30,92,151,0.12);
     transform: translateY(-2px) scale(1.03);
 }
 
-.btn-danger {
+/* Danger button style */
+.btn-danger, button.btn-danger {
     background: var(--yellow-dark);
     color: var(--white);
 }
-
-.btn-danger:hover, .btn-danger:focus {
+.btn-danger:hover, button.btn-danger:hover,
+.btn-danger:focus, button.btn-danger:focus {
     background: var(--yellow);
     color: var(--grey-dark);
     box-shadow: 0 6px 18px rgba(243,156,18,0.18);
     transform: translateY(-2px) scale(1.03);
 }
 
+/* Tab and upload tab buttons */
 .tab-button, .upload-tab-btn {
     background: transparent;
     color: var(--blue);
@@ -285,13 +287,11 @@ p, label, span, select, input, textarea, button {
     position: relative;
     margin: 0.5rem 0.5rem 0 0.5rem;
 }
-
 .tab-button.active, .upload-tab-btn.active {
     background: var(--blue);
     color: var(--white);
     box-shadow: 0 2px 8px rgba(30,92,151,0.07);
 }
-
 .tab-button:hover, .tab-button:focus, .upload-tab-btn:hover, .upload-tab-btn:focus {
     background: var(--blue-light);
     color: var(--white);
@@ -322,10 +322,14 @@ input:focus, select:focus, textarea:focus {
     box-shadow: var(--shadow);
     border: 1px solid #e9ecef;
     transition: box-shadow 0.2s, transform 0.2s;
-    margin: 2rem auto;
-    padding: 2rem 1.5rem;
-    max-width: 600px;
+    margin: 0.5rem 0.5rem;
+    padding: 1.2rem 1rem;
+    max-width: 260px;
+    min-width: 220px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .card:hover {
@@ -417,88 +421,210 @@ input:focus, select:focus, textarea:focus {
 
 /* Upload Areas */
 .upload-area {
-    border: 2px dashed var(--blue);
+    border: 2.5px dashed var(--blue);
     border-radius: var(--radius);
-    padding: 2.5rem 1.5rem;
+    padding: 2.8rem 1.5rem;
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s ease;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    background: linear-gradient(135deg, #e3f0fa 0%, #f8f9fa 100%);
     margin: 2rem auto 1.5rem auto;
     max-width: 600px;
-}
-
-.upload-area:hover, .upload-area:focus {
-    background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
-    border-color: var(--green);
-    transform: translateY(-2px);
+    transition: 
+        background 0.3s, 
+        border-color 0.3s, 
+        box-shadow 0.3s, 
+        transform 0.2s;
+    box-shadow: 0 4px 18px rgba(30,92,151,0.07);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
 }
 
 .upload-area i {
-    font-size: 2.5rem;
+    font-size: 3rem;
     color: var(--blue);
-    margin-bottom: 1rem;
+    margin-bottom: 0.7rem;
+    transition: color 0.2s;
+}
+
+.upload-area:hover, .upload-area:focus {
+    background: linear-gradient(135deg, #e0f7fa 0%, #e3ffe6 100%);
+    border-color: var(--green);
+    box-shadow: 0 8px 32px rgba(32,201,151,0.13);
+    transform: translateY(-2px) scale(1.02);
+}
+
+.upload-area:hover i, .upload-area:focus i {
+    color: var(--green);
 }
 
 .upload-area p {
-    margin: 0;
     color: var(--blue);
-    font-weight: 500;
-    font-size: 1.1rem;
+    font-weight: 600;
+    font-size: 1.15rem;
+    margin: 0;
 }
 
 .upload-area small {
     color: #666;
-    font-size: 0.9rem;
+    font-size: 0.97rem;
     display: block;
     margin-top: 0.5rem;
 }
 
-/* Empty State */
-.empty-state, .empty-state-small {
-    text-align: center;
-    padding: 2.5rem 1rem;
-    color: #666;
+/* --- Improved Upload Tabs --- */
+.upload-tabs {
+    display: flex;
+    gap: 0.5rem;
+    background: var(--grey);
+    border-radius: var(--radius) var(--radius) 0 0;
+    margin-bottom: 1.2rem;
+    padding: 0.5rem 0.5rem 0 0.5rem;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(30,92,151,0.06);
 }
 
-.empty-state i, .empty-state-small i {
-    font-size: 2.5rem;
+.upload-tab-btn {
+    background: transparent;
     color: var(--blue);
-    margin-bottom: 1rem;
-    opacity: 0.5;
-}
-
-.empty-state h3, .empty-state-small h3 {
-    font-size: 1.25rem;
+    border: none;
+    border-radius: var(--radius) var(--radius) 0 0;
+    font-size: 1.08rem;
     font-weight: 600;
-    color: #333;
-    margin-bottom: 0.5rem;
+    padding: 0.9rem 2.1rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.15s;
+    position: relative;
+    margin: 0.5rem 0.5rem 0 0.5rem;
+    box-shadow: none;
+    outline: none;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
 }
 
-/* Responsive Design */
-@media (max-width: 1200px) {
-    .main-content { padding: 1rem; }
+.upload-tab-btn.active {
+    background: linear-gradient(90deg, var(--blue) 0%, var(--green-light) 100%);
+    color: var(--white);
+    box-shadow: 0 2px 8px rgba(30,92,151,0.10);
+    z-index: 2;
 }
-@media (max-width: 900px) {
-    .overview-cards { grid-template-columns: 1fr 1fr; }
+
+.upload-tab-btn:hover, .upload-tab-btn:focus {
+    background: var(--blue-light);
+    color: var(--white);
+    transform: translateY(-2px) scale(1.03);
+    z-index: 2;
 }
-@media (max-width: 768px) {
-    .header-content { flex-direction: column; gap: 1rem; text-align: center; }
-    .main-content { padding: 1rem; }
-    .overview-cards { grid-template-columns: 1fr; }
-    .tabs { flex-direction: column; }
-    .tab-header { flex-direction: column; gap: 1rem; align-items: flex-start; }
-    .tab-actions { width: 100%; justify-content: flex-start; }
-    .modal-content { margin: 10% auto; width: 99%; }
-    .upload-area { padding: 2rem 1rem; }
-    .upload-area i { font-size: 2rem; }
+
+.upload-tab-content {
+    background: var(--white);
+    border-radius: 0 0 var(--radius) var(--radius);
+    box-shadow: 0 2px 8px rgba(30,92,151,0.06);
+    padding: 2rem 1.5rem;
+    margin-bottom: 1.5rem;
+    min-height: 180px;
+    animation: fadeIn 0.3s;
 }
-@media (max-width: 480px) {
-    .main-content { padding: 0.5rem; }
-    .modal-content { width: 99%; }
-    .form-group, .modal-actions, .form-actions { padding: 0.5rem; }
-    .tab-content { padding: 1rem; }
-    .header-left h1 { font-size: 1.3rem; }
-    .card-number, .quality-score { font-size: 1.5rem; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+
+/* --- Compact Card Layout for Carousel --- */
+
+/* Reduce card size and padding */
+.card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid #e9ecef;
+    transition: box-shadow 0.2s, transform 0.2s;
+    margin: 0.5rem 0.5rem;
+    padding: 1.2rem 1rem;
+    max-width: 260px;
+    min-width: 220px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Carousel container for cards */
+.cards-carousel {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 1rem;
+    padding: 1rem 0;
+    scroll-snap-type: x mandatory;
+}
+
+.cards-carousel .card {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+}
+
+/* Hide scrollbar for a cleaner look */
+.cards-carousel {
+    scrollbar-width: thin;
+    scrollbar-color: var(--blue) var(--grey);
+}
+.cards-carousel::-webkit-scrollbar {
+    height: 8px;
+    background: var(--grey);
+}
+.cards-carousel::-webkit-scrollbar-thumb {
+    background: var(--blue-light);
+    border-radius: 4px;
+}
+
+/* Responsive: show more cards per row on large screens */
+@media (min-width: 900px) {
+    .cards-carousel {
+        justify-content: flex-start;
+        gap: 1.5rem;
+    }
+    .card {
+        max-width: 240px;
+        min-width: 200px;
+        padding: 1rem 0.7rem;
+    }
+}
+
+/* Compact Module Button Bar */
+.module-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 1.2rem 0 1.5rem 0;
+}
+
+.module-btn {
+    background: var(--white);
+    color: var(--blue);
+    border: 2px solid var(--blue-light);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s, border 0.2s, transform 0.15s;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(30,92,151,0.07);
+    outline: none;
+}
+
+.module-btn.active,
+.module-btn:focus,
+.module-btn:hover {
+    background: linear-gradient(90deg, var(--blue) 60%, var(--green-light) 100%);
+    color: var(--white);
+    border: 2px solid var(--green-light);
+    transform: scale(1.08);
 }
 
